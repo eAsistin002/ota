@@ -23,4 +23,4 @@ APIs are listed below
 4. **PUT** http://localhost:8081/notes/updateNote/{id}
 **     {id} is a number
      Please also include request body similar to createNote**
-5. **DELETE** http://localhost:8081/notes/deletNote/{id}
+5. **DELETE** http://localhost:8081/notes/deleteNote/{id}

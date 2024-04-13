@@ -1,5 +1,5 @@
 1. Clone this repository in your IDE
-   NOTE: Please make sure you have Java 17 as well as latest MAVEN in your machine
+   **NOTE: Please make sure you have Java 17 as well as latest MAVEN in your machine**
 2. on the terminal run using :
      **mvn clean compile**
      then

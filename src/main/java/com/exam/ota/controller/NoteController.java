@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import com.exam.ota.exception.NoteNotFoundException;
 import com.exam.ota.model.Note;
 import com.exam.ota.service.NoteService;
 
@@ -34,36 +35,43 @@ public class NoteController {
  @RequestMapping(value ="/list", method = RequestMethod.GET)
  public ResponseEntity<List<Note>> getAllNotes() {
      List<Note> notes = noteService.getAll();
-     return new ResponseEntity<>(notes, HttpStatus.OK);
+     if(notes.isEmpty()) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+     } else {
+         return new ResponseEntity<>(notes, HttpStatus.OK);
+     }
  }
  
  @RequestMapping(value ="/getNoteById/{id}", method = RequestMethod.GET)
- public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
+ public ResponseEntity<?> getNoteById(@PathVariable Long id) {
      Note note = noteService.getById(id);
      if (note != null) {
          return new ResponseEntity<>(note, HttpStatus.OK);
      } else {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         throw new NoteNotFoundException(id);
      }
  }
  
  @RequestMapping(value ="/updateNote/{id}", method = RequestMethod.PUT)
- public ResponseEntity<Note> updateNote(@PathVariable Long id, @Validated @RequestBody Note note) {
+ public ResponseEntity<?> updateNote(@PathVariable Long id, @Validated @RequestBody Note note) {
      Note updatedNote = noteService.update(id, note);
      if (updatedNote != null) {
-         return new ResponseEntity<>(updatedNote, HttpStatus.OK);
+         return ResponseEntity.ok("Note updated successfully");
      } else {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         throw new NoteNotFoundException(id);
      }
  }
  
- @RequestMapping(value ="/deletNote/{id}", method = RequestMethod.DELETE)
- public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
+ @RequestMapping(value ="/deleteNote/{id}", method = RequestMethod.DELETE)
+ public ResponseEntity<?> deleteNote(@PathVariable Long id) {
      boolean deleted = noteService.delete(id);
+     System.out.println(deleted);
      if (deleted) {
-         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+         return ResponseEntity.ok("Note deleted successfully");
      } else {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         throw new NoteNotFoundException(id);
      }
+
  }
 }

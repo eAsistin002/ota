@@ -4,7 +4,7 @@
      **mvn clean compile**
      then
      **mvn spring-boot:run**
-3. Once the application is running on postman you can test the APIs
+3. Once the application is running. On postman you can test the APIs
 
 
 
